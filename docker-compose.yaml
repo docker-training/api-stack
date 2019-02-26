@@ -1,0 +1,39 @@
+version: "3.7"    
+
+services:
+  db:
+    image: postgres:9.6
+    networks: 
+    - demonet
+    env_file:
+      - db/myvars.env
+    configs:
+      - source: initscript
+        target: /docker-entrypoint-initdb.d/init.sh  
+    secrets:
+      - password
+    environment:
+      - POSTGRES_PASSWORD_FILE=/run/secrets/password
+  api:
+    image: myapi:demo
+    networks: 
+    - demonet
+    ports:
+    - 8080:8080
+  dbui:
+    image: adminer
+    networks: 
+    - demonet
+    ports:
+    - 8081:8080
+
+configs:
+  initscript:
+    file: ./db/db-init.sh
+
+secrets:
+  password:
+    external: true
+
+networks:
+  demonet:
