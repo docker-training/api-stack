@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: postgres
+        image: <DTR FQDN>:4443/engineering/db:1.0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: springboot
+        image: <DTR FQDN>:4443/engineering/api:rc-1.0-build-30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: database
+  namespace: test
+spec:
+  selector:
+    app: db
+  ports:
+  - port: 5432
+    targetPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apitest
+  namespace: test
+spec:
+  selector:
+    app: api
+  ports:
+  - port: 8080
+    targetPort: 8080
