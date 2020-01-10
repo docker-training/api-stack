@@ -11,7 +11,7 @@ pipeline {
     }
 
     stages {
-        stage('Test') {
+        stage('Unit') {
             environment {
                 DTR_ACCESS_KEY = credentials('jenkins-dtr-access-token')
             }
