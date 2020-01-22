@@ -8,6 +8,7 @@ pipeline {
         DOCKER_CERT_PATH='/home/jenkins/jenkinscerts'
         DOCKER_HOST='tcp://<UCP FQDN>:443'
         DTR_FQDN_PORT='<DTR FQDN>:4443'
+        KUBECONFIG='/home/jenkins/jenkinscerts/kube.yml'
     }
 
     stages {
